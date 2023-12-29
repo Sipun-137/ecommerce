@@ -1,11 +1,12 @@
 "use client";
 import Button from "@mui/material/Button";
 import { adminNavOptions, navOptions, styles } from "@/utils/index";
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from "@mui/icons-material/Menu";
 import { Fragment, useContext } from "react";
 import Link from "next/link";
 import { GlobalContext } from "@/context";
 import CommonModal from "./CommonModal";
+import { useRouter } from "next/navigation";
 const isAdminView = false;
 const isAuthUser = false;
 const user = {
@@ -20,7 +21,11 @@ function NavItems({ isModal = false }: any) {
         isModal ? "" : "hidden"
       }`}
     >
-      <ul className={`flex flex-col p-4 md:p-0 mt-4 font-medium  rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-white ${isModal?"border-none":"border border-gray-100"}`}>
+      <ul
+        className={`flex flex-col p-4 md:p-0 mt-4 font-medium  rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-white ${
+          isModal ? "border-none" : "border border-gray-100"
+        }`}
+      >
         {isAdminView
           ? adminNavOptions.map((item) => (
               <Link
@@ -45,6 +50,7 @@ function NavItems({ isModal = false }: any) {
   );
 }
 export default function Navbar() {
+  const router=useRouter();
   const { showNavModal, setShowNavModal } = useContext(GlobalContext);
   return (
     <>
@@ -59,34 +65,41 @@ export default function Navbar() {
           <div className="flex md:order-2 gap-2 text-black">
             {!isAdminView && isAuthUser ? (
               <Fragment>
-                <Button className={styles.button}>Account</Button>
-                <Button className={styles.button}>Cart</Button>
+                <Button variant="outlined">Account</Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    setShowNavModal(!showNavModal);
+                  }}
+                >
+                  Cart
+                </Button>
               </Fragment>
             ) : null}
             {user?.role === "admin" ? (
               isAdminView ? (
-                <Button className={styles.button}>client view</Button>
+                <Button variant="outlined">client view</Button>
               ) : (
-                <Button className={styles.button}>Admin view</Button>
+                <Button variant="outlined">Admin view</Button>
               )
             ) : null}
             {isAuthUser ? (
-              <Button className={styles.button}>logout</Button>
+              <Button variant="outlined">logout</Button>
             ) : (
-              <Button variant="outlined" className={styles.button}>
-                login
-              </Button>
+              <Button variant="outlined" onClick={()=>router.push("/login")}>login</Button>
             )}
             {/* this code s for the use of the mobile view support */}
-            <button
+            <Button
               data-collapse-toggle="navbar-sticky"
               aria-controls="navbat-sticky"
               aria-expanded="false"
               className="md:hidden text-gray-500"
-              onClick={()=>{setShowNavModal(!showNavModal)}}
+              onClick={() => {
+                setShowNavModal(!showNavModal);
+              }}
             >
-              <MenuIcon/>
-            </button>
+              <MenuIcon />
+            </Button>
           </div>
           <NavItems />
         </div>
@@ -100,7 +113,7 @@ export default function Navbar() {
         modalTitle={""}
         showButton={undefined}
         buttonComponent={undefined}
-      ></CommonModal>
+      />
     </>
   );
 }
