@@ -4,9 +4,30 @@ import { registrationFormcontrol } from "@/utils";
 import InputElement from "@/components/FormElement/InputElement";
 import SelectElement from "@/components/FormElement/SelectElement";
 import { Button } from "@mui/material";
+import { useState } from "react";
+import { registerNewUser } from "@/services/RegisterNewUser";
 
 const isRegistered = false;
+
+const InitialState = {
+  name: "",
+  email: "",
+  password: "",
+  role: "customer",
+};
 export default function Register() {
+  const [formData, setFormData] = useState<any>(InitialState);
+  console.log(formData);
+
+  const isValid=()=>{
+    return formData && formData.name && formData.name.trim()!==""
+    &&  formData.email && formData.email.trim()!==""
+    &&  formData.password && formData.password.trim()!==""?true:false
+  }
+  async function handleRegisterOnSubmit(){
+      const data=await registerNewUser(formData);
+      console.log(data)
+  }
   return (
     <div className="bg-white relative">
       <div className="flex flex-col items-center justify-between pt-0 pr-10 pb-0 ,t-8 mr-auto xl:px-5 lg:flex-row  ">
@@ -31,18 +52,33 @@ export default function Register() {
                         type={item.type}
                         label={item.label}
                         placeholder={item.placeholder}
-
+                        onChange={(event: any) => {
+                          setFormData({
+                            ...formData,
+                            [item.id]: event.target.value,
+                          });
+                        }}
+                        value={formData[item.id]}
                       />
                     ) : item.componentType === "select" ? (
                       <SelectElement
-                      key={item.id}
-                      label={item.label}
-                      option={item.options}
+                        key={item.id}
+                        label={item.label}
+                        option={item.options}
+                        onChange={(event: any) => {
+                          setFormData({
+                            ...formData,
+                            [item.id]: event.target.value,
+                          });
+                        }}
+                        value={formData[item.id]}
                       />
                     ) : null
                   )}
                   <div>
-                  <Button fullWidth className="rounded-md">register</Button>
+                    <Button fullWidth className="rounded-md disabled:opacity-70" disabled={!isValid()} onClick={handleRegisterOnSubmit}>
+                      register
+                    </Button>
                   </div>
                 </div>
               )}

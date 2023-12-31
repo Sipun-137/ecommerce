@@ -2,13 +2,34 @@
 
 import { LoginFormcontrol } from "@/utils";
 import InputElement from "@/components/FormElement/InputElement";
-import SelectElement from "@/components/FormElement/SelectElement";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { loginUserData } from "@/services/LoginUser";
 
 const isRegistered = false;
-export default function Register() {
-  const router=useRouter();
+export default function Login() {
+  const router = useRouter();
+  const [formData, setFormData] = useState<any>({
+    email: "",
+    password: "",
+  });
+  console.log(formData)
+
+  const isValid = () => {
+    return formData &&
+      formData.email &&
+      formData.email.trim() !== "" &&
+      formData.password &&
+      formData.password.trim() !== ""
+      ? true
+      : false;
+  };
+  async function handleLoginOnSubmit(){
+    const data=await loginUserData(formData)
+    console.log(data)
+    router.push("/")
+  }
   return (
     <div className="bg-white relative">
       <div className="flex flex-col items-center justify-between pt-0 pr-10 pb-0 ,t-8 mr-auto xl:px-5 lg:flex-row  ">
@@ -27,6 +48,13 @@ export default function Register() {
                       type={item.type}
                       label={item.label}
                       placeholder={item.placeholder}
+                      onChange={(event: any) => {
+                        setFormData({
+                          ...formData,
+                          [item.id]: event.target.value,
+                        });
+                      }}
+                      value={formData[item.id]}
                     />
                   ) : null
                 )}
@@ -34,6 +62,9 @@ export default function Register() {
                   <Button
                     fullWidth
                     className="rounded-md tracking-[8px] font-serif text-black"
+                    onClick={
+                      handleLoginOnSubmit
+                    }
                   >
                     Login
                   </Button>
@@ -42,7 +73,7 @@ export default function Register() {
                   <p className="font-serif text-black">New to Website</p>
                   <Button
                     // href="/register"
-                    onClick={()=>router.push("/register")}
+                    onClick={() => router.push("/register")}
                     fullWidth
                     className="rounded-md tracking-[8px] font-serif text-black"
                   >
