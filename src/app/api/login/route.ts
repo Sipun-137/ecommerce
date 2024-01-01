@@ -2,44 +2,60 @@ import User from "@/models/UserModel";
 import Joi from "joi";
 import bcryptjs from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
+import jwt from 'jsonwebtoken'
+import connect from "@/dbConfig/dbConfig";
 
-const schema = Joi.object({
-    email: Joi.string().required,
-    password: Joi.string().required
-})
-
+connect()
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest) {
     const { email, password } = await req.json()
-    const {error}=schema.validate({email,password});
-
+    console.log(email, password)
     try {
-        if(error){
-            return NextResponse.json({
-                success:false,
-                message:error.details[0].message
-            })
-        }
-        const hashPassword=await bcryptjs.hash(password,12)
-        const valid=await User.findOne({email})
-        if(valid){
-            if(password===hashPassword){
+        const valid = await User.findOne({ email })
+        console.log("message:",valid)
+        if (valid) {
+            const isValidated = await bcryptjs.compare(password, valid.password)
+            if (!isValidated) {
                 return NextResponse.json({
-                    success:true,
-                    message:"user login with credentials successfully"
+                    success: false,
+                    message: 'Invalid Password'
                 })
-            }else{
-                return NextResponse.json({
-                    success:false,
-                    message:"error in login with the given credentials"
-                }) 
-            } 
+            }
+            const token = jwt.sign({
+                id: valid._id,
+                email: valid?.email,
+                role: valid?.role
+            }, "thequicklittlefoxjumpsoverthelazydogs", { expiresIn: '1d' })
+            const finalResult = {
+                token,
+                user: {
+                    email: valid.email,
+                    name: valid.name,
+                    _id: valid.id,
+                    role: valid.role
+                }
+            }
+            console.log('login successful')
+            return NextResponse.json({
+                success: true,
+                message: "login Successful",
+                finalResult
+            })
+
         }
-    } catch (error:any) {
         return NextResponse.json({
-            success:false,
-            message:"error in login with the given credentials"
+            success: false,
+            message: "error in login with the given credentials"
+        })
+
+
+
+
+    } catch (error: any) {
+        return NextResponse.json({
+            success: false,
+            message: "error in login with the given credentials"
         })
     }
 }
