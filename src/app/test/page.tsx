@@ -1,4 +1,4 @@
-"use client"
+
 
 import ComponentLevelLoader from "@/components/Loader/ComponentLevelLoader"
 

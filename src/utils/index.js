@@ -101,3 +101,112 @@ export const LoginFormcontrol = [
     componentType: "input",
   },
 ];
+
+export const adminAddProductFormControl = [
+  {
+    id: "name",
+    type: "text",
+    placeholder: "Enter name",
+    label: "name",
+    componentType: "input",
+  },
+  {
+    id: "description",
+    type: "text",
+    placeholder: "Enter Description",
+    label: "Description",
+    componentType: "input",
+  },
+  {
+    id: "price",
+    type: "number",
+    placeholder: "Enter Price",
+    label: "Price",
+    componentType: "input",
+  },
+
+  {
+    id: "category",
+    type: "",
+    placeholder: "",
+    label: "Category",
+    componentType: "select",
+    options: [
+      {
+        id: "men",
+        label: "men",
+      },
+      {
+        id: "women",
+        label: "women",
+      },
+      {
+        id: "kids",
+        label: "kids",
+      },
+    ],
+  },
+  {
+    id: "onsale",
+    type: "",
+    placeholder: "",
+    label: "On Sale",
+    componentType: "select",
+    options: [
+      {
+        id: "yes",
+        label: "Yes",
+      },
+      {
+        id: "no",
+        label: "No",
+      },
+    ],
+  },
+  {
+    id: "deliveryinfo",
+    type: "text",
+    placeholder: "Enter Delivery Info",
+    label: "delivery info",
+    componentType: "input",
+  },
+  {
+    id: "priceDrop",
+    type: "number",
+    placeholder: "Enter Price Drop",
+    label: "Price drop",
+    componentType: "input",
+  },
+];
+
+export const availableSizes = [
+  {
+    id: "s",
+    label: "S",
+  },
+  {
+    id: "m",
+    label: "M",
+  },
+  {
+    id: "l",
+    label: "L",
+  },
+  {
+    id: "xl",
+    label: "XL",
+  },
+];
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyD26QBIYB-qYp2P6gVAfGxFXcRe5jXgyDg",
+  authDomain: "ecommerce-2023-15d7f.firebaseapp.com",
+  projectId: "ecommerce-2023-15d7f",
+  storageBucket: "ecommerce-2023-15d7f.appspot.com",
+  messagingSenderId: "674882012661",
+  appId: "1:674882012661:web:566330e4eaff49be178cbc",
+  measurementId: "G-B3L1E52VPR",
+};
+
+export const firebaseUtilsUrl = "gs://ecommerce-2023-15d7f.appspot.com";
+export const secretData=process.env.SECRETKEY

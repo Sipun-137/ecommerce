@@ -4,7 +4,7 @@ import { registrationFormcontrol } from "@/utils";
 import InputElement from "@/components/FormElement/InputElement";
 import SelectElement from "@/components/FormElement/SelectElement";
 import { Alert, Button, Snackbar } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { registerNewUser } from "@/services/RegisterNewUser";
 import { useRouter } from "next/navigation";
 import { GlobalContext } from "@/context";
@@ -18,7 +18,7 @@ const InitialState = {
 };
 export default function Register() {
   const router = useRouter();
-  const { componentLevelLoader, setComponentLevelLoader } =
+  const { componentLevelLoader, setComponentLevelLoader,isAuthUser } =
     useContext(GlobalContext);
   const [isRegistered, setIsRegistered] = useState(false);
   const [formData, setFormData] = useState<any>(InitialState);
@@ -64,6 +64,13 @@ export default function Register() {
   function handleLogin() {
     router.push("/login");
   }
+  useEffect(() => {
+    if (isAuthUser) {
+      setTimeout(() => {
+        router.push("/");
+      }, 3000);
+    }
+  }, [isAuthUser, router]);
   return (
     <>
       {

@@ -9,22 +9,28 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import { GlobalContext } from "@/context";
 import CommonModal from "./CommonModal";
-import { useRouter } from "next/navigation";
-
-
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Navbar() {
   const router = useRouter();
-  const { showNavModal, setShowNavModal, user, isAuthUser,setAuthUser ,setUser} = useContext(GlobalContext);
-  function handleLogout(){
+  const {
+    showNavModal,
+    setShowNavModal,
+    user,
+    isAuthUser,
+    setAuthUser,
+    setUser,
+  } = useContext(GlobalContext);
+  function handleLogout() {
     setAuthUser(false);
     setUser(null);
-    Cookies.remove("token")
+    Cookies.remove("token");
     localStorage.clear();
     router.push("/");
   }
-  const isAdminView=  user?.role==="admin"?true:false
-  function NavItems({ isModal = false }: any) {
+  const pathname = usePathname();
+  const isAdminView = pathname.includes("admin-view");
+  function NavItems({ isModal = false, isAdminView }: any) {
     return (
       <div
         id="nav-items"
@@ -64,7 +70,12 @@ export default function Navbar() {
     <>
       <nav className="bg-white fixed w-full z-20 top-0 left-0 border-b border-gray-200">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <div className="flex items-center cursor-pointer">
+          <div
+            onClick={() => {
+              router.push("/");
+            }}
+            className="flex items-center cursor-pointer"
+          >
             <span className="self-center text-2xl font-semibold whitespace-nowrap uppercase text-black">
               ecommerce
             </span>
@@ -89,11 +100,23 @@ export default function Navbar() {
             ) : null}
             {user?.role === "admin" ? (
               isAdminView ? (
-                <Button variant="outlined" size="small">
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={() => {
+                    router.push("/");
+                  }}
+                >
                   client
                 </Button>
               ) : (
-                <Button variant="outlined" size="small">
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={() => {
+                    router.push("/admin-view");
+                  }}
+                >
                   Admin
                 </Button>
               )
@@ -125,7 +148,7 @@ export default function Navbar() {
               <MenuIcon />
             </Button>
           </div>
-          <NavItems />
+          <NavItems isAdminView={isAdminView} />
         </div>
         <></>
       </nav>
@@ -133,7 +156,7 @@ export default function Navbar() {
       <CommonModal
         show={showNavModal}
         setShow={setShowNavModal}
-        MainContent={<NavItems isModal={true} />}
+        MainContent={<NavItems isModal={true} isAdminView={isAdminView} />}
         modalTitle={"Menu Items"}
         showButton={undefined}
         buttonComponent={undefined}
