@@ -1,10 +1,5 @@
-import CommonListing from "@/components/Commonlisting/CommonListing";
-
-
-export default function Adminview() {
+export default function page() {
   return (
-    <>
-      <CommonListing/>
-    </>
+    <div>show all product from the store</div>
   )
 }

@@ -1,6 +1,12 @@
+import CommonListing from "@/components/Commonlisting/CommonListing";
+import { allProducts } from "@/services/product";
 
-export default function page() {
+export default async function Adminview() {
+  const adminallProducts= await allProducts()
   return (
-    <div>show all product from the store</div>
+    <>
+      <CommonListing products={adminallProducts}/>
+    </>
   )
 }
+

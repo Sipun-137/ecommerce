@@ -6,7 +6,7 @@ import TileComponent from "@/components/TileComponent";
 import {
   adminAddProductFormControl,
   availableSizes,
-  firebaseUtilsUrl,
+  firebaseConfig,
 } from "@/utils";
 import { Button } from "@mui/material";
 import { useContext, useState } from "react";
@@ -33,16 +33,6 @@ const initialFormData = {
   onsale: "no",
   priceDrop: 0,
   imgUrl: "",
-};
-
-const firebaseConfig = {
-  apiKey: process.env.APIKEY as string,
-  authDomain: process.env.AUTHDOMAIN as string,
-  projectId: process.env.PROJECTID as string,
-  storageBucket:process.env.STORAGEBUCKET as string,
-  messagingSenderId: process.env.MESSAGINGSENDERID as string,
-  appId: process.env.APPID as string,
-  measurementId: process.env.MEASUREMENTID as string,
 };
 
 const app = initializeApp(firebaseConfig);

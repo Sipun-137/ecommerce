@@ -207,6 +207,13 @@ export const firebaseConfig = {
   appId: "1:674882012661:web:566330e4eaff49be178cbc",
   measurementId: "G-B3L1E52VPR",
 };
-
+export const firebaseConfig2 = {
+  apiKey: process.env.APIKEY,
+  authDomain: process.env.AUTHDOMAIN,
+  projectId: process.env.PROJECTID,
+  storageBucket:process.env.STORAGEBUCKET,
+  messagingSenderId: process.env.MESSAGINGSENDERID,
+  appId: process.env.APPID,
+  measurementId: process.env.MEASUREMENTID,
+};
 export const firebaseUtilsUrl = "gs://ecommerce-2023-15d7f.appspot.com";
-export const secretData=process.env.SECRETKEY
