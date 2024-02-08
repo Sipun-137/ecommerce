@@ -5,14 +5,14 @@ import { NextRequest, NextResponse } from "next/server";
 export const dynamic = 'force-dynamic'
 connect();
 export async function GET(req: NextRequest) {
-
-
     try {
-        const extractProducts = await Product.find({})
-        if (extractProducts) {
+        const { searchParams } = new URL(req.url);
+        const id = searchParams.get('id');
+        const getData = await Product.find({ category: id })
+        if (getData) {
             return NextResponse.json({
                 success: true,
-                data: extractProducts,
+                data: getData,
             })
         } else {
             return NextResponse.json({

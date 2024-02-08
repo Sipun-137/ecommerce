@@ -9,7 +9,7 @@ import {
   firebaseConfig,
 } from "@/utils";
 import { Button } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import {
   getDownloadURL,
@@ -17,7 +17,7 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { addnewProduct } from "@/services/product";
+import { UpdateProduct, addnewProduct } from "@/services/product";
 import AlertSnackBar from "@/components/AlertSnackBar";
 import { useRouter } from "next/navigation";
 import ComponentLevelLoader from "@/components/Loader/ComponentLevelLoader";
@@ -73,7 +73,15 @@ export default function Page() {
   const [status, setStatus] = useState({ type: "warning", message: "" });
   const [formData, setFormData] = useState<any>(initialFormData);
   const {componentLevelLoader,
-    setComponentLevelLoader}=useContext(GlobalContext);
+    setComponentLevelLoader,currentUpdatedProduct,setCurrentUpdatedProduct}=useContext(GlobalContext);
+  
+  useEffect(()=>{
+    if(currentUpdatedProduct!==null)setFormData(currentUpdatedProduct)
+  },[currentUpdatedProduct])
+
+
+
+
   async function handleImage(event: any) {
     console.log(event.target.files);
     const extractImageUrl = await helperForUploadingImageToFirebase(
@@ -85,6 +93,9 @@ export default function Page() {
     }
   }
   
+
+
+
   function handleTileClick(getCurrentItem:any){
     let copySizes=[...formData.sizes]
     const index=copySizes.findIndex(item=>item.id===getCurrentItem.id)
@@ -100,13 +111,14 @@ export default function Page() {
   //handle add product function to send to the service
   async function handleAddProduct(){
     setComponentLevelLoader({ loading: true, id: "" });
-    const res=await addnewProduct(formData);
+    const res =currentUpdatedProduct!== null? await UpdateProduct(formData):await addnewProduct(formData);
     console.log(res);
     if(res.success){
       setComponentLevelLoader({ loading: false, id: "" });
       setOpen(true);
       setStatus({ type:"success", message: res.message })
       setFormData(initialFormData);
+      setCurrentUpdatedProduct(null)
       setTimeout(() => {
         router.push("/admin-view/all-product");
       }, 3000);
@@ -170,10 +182,8 @@ export default function Page() {
                 onClick={handleAddProduct}
               >
                 {componentLevelLoader && componentLevelLoader.loading ? (
-                        <ComponentLevelLoader message={"Adding Product"} />
-                      ) : (
-                        "Add Product"
-                      )}
+                        <ComponentLevelLoader message={`${currentUpdatedProduct!==null?'updating Product':'adding Product'}`} />
+                      ) : currentUpdatedProduct!==null?'update Product':'add Product'}
               </Button>
             </div>
           </div>

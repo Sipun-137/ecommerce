@@ -1,7 +1,4 @@
 import axios from "axios"
-
-
-
 export const registerNewUser=async (FormData:any)=>{
 
     try {

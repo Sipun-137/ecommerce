@@ -1,10 +1,10 @@
 "use client";
 import Button from "@mui/material/Button";
-import { adminNavOptions, navOptions, styles } from "@/utils/index";
+import { adminNavOptions, navOptions } from "@/utils/index";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useEffect } from "react";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { GlobalContext } from "@/context";
@@ -12,6 +12,8 @@ import CommonModal from "./CommonModal";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function Navbar() {
+
+
   const router = useRouter();
   const {
     showNavModal,
@@ -20,6 +22,7 @@ export default function Navbar() {
     isAuthUser,
     setAuthUser,
     setUser,
+    setCurrentUpdatedProduct
   } = useContext(GlobalContext);
   function handleLogout() {
     setAuthUser(false);
@@ -30,6 +33,10 @@ export default function Navbar() {
   }
   const pathname = usePathname();
   const isAdminView = pathname.includes("admin-view");
+
+  useEffect(()=>{
+    if(pathname!=="/admin-view/add-product")setCurrentUpdatedProduct(null);
+  },[pathname])
   function NavItems({ isModal = false, isAdminView }: any) {
     return (
       <div
@@ -164,3 +171,5 @@ export default function Navbar() {
     </>
   );
 }
+
+

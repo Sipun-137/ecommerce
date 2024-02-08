@@ -10,7 +10,6 @@ export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest) {
     const { email, password } = await req.json()
-    console.log(email, password)
     try {
         const valid = await User.findOne({ email })
         console.log("message:",valid)

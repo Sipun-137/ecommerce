@@ -15,7 +15,8 @@ export default function AlertSnackBar({stat, type, message }: any) {
   return (
     <Snackbar
       autoHideDuration={2000}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      className=" z-30"
+      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       open={stat}
       onClose={handleClose}
     >

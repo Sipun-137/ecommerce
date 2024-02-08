@@ -1,13 +1,14 @@
 import connect from "@/dbConfig/dbConfig";
 import { NextRequest, NextResponse } from "next/server";
 import Product from "@/models/ProductModel";
-
+import middleware  from "@/middleware";
 connect()
 
 export const dynamic = 'force-dynamic'
 export async function POST(req: NextRequest) {
     try {
-        const user = "admin"
+        const AuthUser:any=await middleware(req)
+        const user=AuthUser?.role
         if (user === "admin") {
             const extractData = await req.json();
 
