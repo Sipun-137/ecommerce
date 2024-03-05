@@ -1,5 +1,4 @@
 import User from "@/models/UserModel";
-import Joi from "joi";
 import bcryptjs from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from 'jsonwebtoken'

@@ -1,5 +1,5 @@
 import connect from "@/dbConfig/dbConfig";
-import middleware from "@/middleware";
+import { AuthUser } from "@/middleware";
 import Product from "@/models/ProductModel";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -8,8 +8,8 @@ connect();
 
 export async function PUT(req: NextRequest) {
     try {
-        const AuthUser: any = middleware(req)
-        const user = AuthUser?.role
+        const isAuthUser: any = AuthUser(req)
+        const user = isAuthUser?.role
         if (user === "admin") {
             const extractData = await req.json();
             console.log(extractData)
@@ -27,7 +27,7 @@ export async function PUT(req: NextRequest) {
                     message: "unable to update!!! please try after some time"
                 })
             }
-        }else{
+        } else {
             return NextResponse.json({
                 success: false,
                 message: "You are not Authorized to perform the operation..."

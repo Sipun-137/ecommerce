@@ -1,16 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/dbConfig/dbConfig";
-import middleware from "@/middleware";
+import  { AuthUser } from "@/middleware";
 import Cart from "@/models/CartModel";
-
-
 
 connect();
 export const dynamic = 'force-dynamic'
 export async function POST(req: NextRequest) {
     try {
-        const AuthUser: any = await middleware(req)
-        if (AuthUser) {
+        const isAuthUser: any = await AuthUser(req)
+        if (isAuthUser) {
             const data = await req.json();
             const { productID, userID } = data;
 
@@ -41,6 +39,11 @@ export async function POST(req: NextRequest) {
                 })
             }
 
+        }else {
+            return NextResponse.json({
+                success: false,
+                message: "you are not Authrorized"
+            })
         }
 
     } catch (error: any) {

@@ -9,6 +9,7 @@ import { GlobalContext } from "@/context";
 import Cookies from "js-cookie";
 import ComponentLevelLoader from "@/components/Loader/ComponentLevelLoader";
 import AlertSnackBar from "@/components/AlertSnackBar";
+import toast, { Toaster } from "react-hot-toast";
 export default function Login() {
   const router = useRouter();
   const {
@@ -52,6 +53,7 @@ export default function Login() {
       setUser(data?.finalResult?.user);
       setAuthUser(true);
       setStatus({ type: "success", message: "login successfull" });
+      toast.success(data.message)
       setOpen(true);
       setFormData({ email: "", password: "" });
       Cookies.set("token", data?.finalResult?.token);
@@ -74,7 +76,7 @@ export default function Login() {
   }, [isAuthUser, router]);
   return (
     <>
-      <AlertSnackBar stat={open} type={status.type} message={status.message} />
+      <Toaster position="bottom-right" toastOptions={{ duration: 2500 }} />
       <div className="bg-white relative">
         <div className="flex flex-col items-center justify-between pt-0 pr-10 pb-0 ,t-8 mr-auto xl:px-5 lg:flex-row  ">
           <div className="flex flex-col justify-center items-center w-full pr-10 pl-10 lg:flex-row">

@@ -39,7 +39,6 @@ export const adminNavOptions = [
   },
 ];
 
-
 export const registrationFormcontrol = [
   {
     id: "name",
@@ -194,6 +193,44 @@ export const availableSizes = [
   },
 ];
 
+export const addNewAddressFormControl = [
+  {
+    id: "fullName",
+    type: "input",
+    placeholder: "Enter your full Name",
+    label: "Full Name",
+    componentType: "input",
+  },
+  {
+    id: "address",
+    type: "input",
+    placeholder: "Enter your Address",
+    label: "Address",
+    componentType: "input",
+  },
+  {
+    id: "city",
+    type: "input",
+    placeholder: "City Name",
+    label: "City",
+    componentType: "input",
+  },
+  {
+    id: "country",
+    type: "input",
+    placeholder: " Counry Name",
+    label: "Country",
+    componentType: "input",
+  },
+  {
+    id: "PostalCode",
+    type: "input",
+    placeholder: "Postal Code",
+    label: "Postal Code",
+    componentType: "input",
+  },
+];
+
 export const firebaseConfig = {
   apiKey: "AIzaSyD26QBIYB-qYp2P6gVAfGxFXcRe5jXgyDg",
   authDomain: "ecommerce-2023-15d7f.firebaseapp.com",
@@ -207,7 +244,7 @@ export const firebaseConfig2 = {
   apiKey: process.env.APIKEY,
   authDomain: process.env.AUTHDOMAIN,
   projectId: process.env.PROJECTID,
-  storageBucket:process.env.STORAGEBUCKET,
+  storageBucket: process.env.STORAGEBUCKET,
   messagingSenderId: process.env.MESSAGINGSENDERID,
   appId: process.env.APPID,
   measurementId: process.env.MEASUREMENTID,

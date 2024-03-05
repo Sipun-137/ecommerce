@@ -1,5 +1,5 @@
 import connect from "@/dbConfig/dbConfig";
-import middleware from "@/middleware";
+import { AuthUser } from "@/middleware";
 import Product from "@/models/ProductModel";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -11,8 +11,8 @@ export async function DELETE(req: NextRequest) {
 
     try {
 
-        const AuthUser: any = await middleware(req)
-        const user = AuthUser?.role
+        const isAuthUser: any = await AuthUser(req)
+        const user = isAuthUser?.role
         if (user === "admin") {
             const { searchParams } = new URL(req.url);
             const id = searchParams.get('id');

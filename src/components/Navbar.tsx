@@ -10,10 +10,10 @@ import Cookies from "js-cookie";
 import { GlobalContext } from "@/context";
 import CommonModal from "./CommonModal";
 import { usePathname, useRouter } from "next/navigation";
+import { GetAllItem } from "@/services/Cart";
+import CartModal from "./CartModal";
 
 export default function Navbar() {
-
-
   const router = useRouter();
   const {
     showNavModal,
@@ -22,7 +22,9 @@ export default function Navbar() {
     isAuthUser,
     setAuthUser,
     setUser,
-    setCurrentUpdatedProduct
+    setCurrentUpdatedProduct,
+    showCartModal,
+    setShowCartModal,
   } = useContext(GlobalContext);
   function handleLogout() {
     setAuthUser(false);
@@ -34,9 +36,10 @@ export default function Navbar() {
   const pathname = usePathname();
   const isAdminView = pathname.includes("admin-view");
 
-  useEffect(()=>{
-    if(pathname!=="/admin-view/add-product")setCurrentUpdatedProduct(null);
-  },[pathname])
+  useEffect(() => {
+    if (pathname !== "/admin-view/add-product") setCurrentUpdatedProduct(null);
+  }, [pathname]);
+
   function NavItems({ isModal = false, isAdminView }: any) {
     return (
       <div
@@ -91,14 +94,14 @@ export default function Navbar() {
           <div className="flex md:order-2 gap-2 text-black">
             {!isAdminView && isAuthUser ? (
               <Fragment>
-                <Button className="text-black" size="small">
+                <Button className="text-black" size="small" onClick={()=>{router.push("/account");}}>
                   <AccountCircleIcon />
                 </Button>
                 <Button
                   size="small"
                   className="text-black"
                   onClick={() => {
-                    setShowNavModal(!showNavModal);
+                    setShowCartModal(!showCartModal);
                   }}
                 >
                   <ShoppingCartIcon />
@@ -168,8 +171,9 @@ export default function Navbar() {
         showButton={undefined}
         buttonComponent={undefined}
       />
+      {
+        showCartModal && <CartModal/>
+      }
     </>
   );
 }
-
-

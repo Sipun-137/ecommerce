@@ -1,45 +1,38 @@
 import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
+export const dynamic = 'force-dynamic'
 
-// This function can be marked `async` if using `await` inside
-export default function middleware(req: NextRequest) {
+export default function middleware(request: NextRequest) {
+    const path = request.nextUrl.pathname
+    const isPublicPath = path === '/login' || path === '/register'
 
-    // adding a product to the website with authentication
-    if (req.nextUrl.pathname.includes("/admin/add-product"||"/admin/delete-product"||"/admin/update-product")) {
-        const token = req.headers.get("Authorization")?.split(" ")[1];
-        if (!token) {
-            return NextResponse.json({    
-                success: false,
-                message: "Unauthorized access!"
-            });
-        }
-        try {
-            const extractAuthUserinfo = jwt.verify(token, 'thequicklittlefoxjumpsoverthelazydogs');
-            if (extractAuthUserinfo) return extractAuthUserinfo;
-        } catch (error: any) {
-            console.log(error);
-        }
+    const token = request.cookies.get('token')?.value || ''
+
+    if (isPublicPath && token) {
+        return NextResponse.redirect(new URL('/', request.nextUrl));
     }
-    if(req.nextUrl.pathname.includes("/cart/add-to-cart")){
-        const token = req.headers.get("Authorization")?.split(" ")[1];
-        if (!token) {
-            return NextResponse.json({    
-                success: false,
-                message: "Unauthorized access!"
-            });
-        }
-        try {
-            const extractAuthUserinfo = jwt.verify(token, 'thequicklittlefoxjumpsoverthelazydogs');
-            if (extractAuthUserinfo) return extractAuthUserinfo;
-        } catch (error: any) {
-            console.log(error);
-        }
-
+    if (!isPublicPath && !token) {
+        return NextResponse.redirect(new URL('/login', request.nextUrl));
     }
-    
+
 }
 
-// See "Matching Paths" below to learn more
 export const config = {
-    matcher:["/admin-view/:path*"]
+    matcher: [ '/login', '/register' ]
+};
+
+export async function AuthUser(req:NextRequest){
+    const token=req.headers.get("Authorization")?.split(" ")[1];
+    if(!token){
+      return false
+    }
+    try {
+        const extractAuthUserinfo = jwt.verify(token,'thequicklittlefoxjumpsoverthelazydogs');
+        if (extractAuthUserinfo) {
+            // Return the decoded token if authentication is successful
+            return extractAuthUserinfo;
+        }
+    } catch (error: any) {
+        console.log(error);
+    }
 }

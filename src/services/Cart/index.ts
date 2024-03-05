@@ -18,7 +18,7 @@ export const addToCart = async (formdata: any) => {
 
 export const GetAllItem = async (id:String) => {
     try {
-        const response = await axios.get(`/api/cart/all-cart-items?id=${id}`, {
+        const response = await axios.get(`http://localhost:3000/api/cart/all-cart-items?id=${id}`, {
             headers: {
                 Authorization: `Bearer ${Cookies.get('token')}`
             }
